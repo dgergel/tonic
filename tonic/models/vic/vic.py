@@ -69,15 +69,15 @@ class VIC(object):
 
     def _call_vic(self, mpi_proc=None, *args):
 
-	vic_args = []
+        vic_args = []
 
-    if mpi_proc is not None:
-        if isinstance(mpi_proc, int):
-            raise TypeError("number of processors must be specified as an integer")   
+        if mpi_proc is not None:
+            if isinstance(mpi_proc, int):
+                raise TypeError("number of processors must be specified as an integer")   
  
-        vic_args.extend(['mpirun', '-np', '0:d}'.format(mpi_proc)])  
+            vic_args.extend(['mpirun', '-np', '0:d}'.format(mpi_proc)])  
 
-        vic_args += [self.executable] + [a for a in args]
+            vic_args += [self.executable] + [a for a in args]
 
         proc = subprocess.Popen(' '.join(vic_args),
                                 shell=True,
