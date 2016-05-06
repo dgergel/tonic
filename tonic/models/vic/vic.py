@@ -38,7 +38,7 @@ class VIC(object):
         self._call_vic('-o')
         return self.stdout
 
-    def run(self, global_param, logdir=None, mproc_num=None):
+    def run(self, global_param, logdir=None, mpi_proc=None):
         """run VIC"""
 
         if os.path.isfile(global_param):
@@ -51,7 +51,7 @@ class VIC(object):
             with open(global_param_file, mode='w') as f:
                 f.write(global_param)
 
-        self._call_vic('-g', global_param_file, mproc_num=None)
+        self._call_vic('-g', global_param_file, mpi_proc=None)
 
         if logdir:
             now = datetime.now()
@@ -67,16 +67,15 @@ class VIC(object):
 
         return self.returncode
 
-    def _call_vic(self, *args, mproc_num=None):
+    def _call_vic(self, mpi_proc=None, *args):
 
 	vic_args = []
 
-	if mproc_num is not None:
-		if  type(mproc_num) != int:  
-			raise AssertionError 
-			print("number of processors has not been specified as an integer") 
+    if mpi_proc is not None:
+        if isinstance(mpi_proc, int):
+            raise TypeError("number of processors must be specified as an integer")   
  
-		vic_args.extend = "mpirun -np %s" % str(mproc_num)  
+        vic_args.extend(['mpirun', '-np', '0:d}'.format(mpi_proc)])  
 
         vic_args += [self.executable] + [a for a in args]
 
