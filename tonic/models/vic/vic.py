@@ -39,13 +39,29 @@ class VIC(object):
         return self.stdout
 
     def run(self, global_param, logdir=None, **kwargs):
-        """run VIC.
+        """
+        Run VIC with specified global parameter file. 
 
-        Keyword argument: 
+        Parameters 
+        ----------
+        global_param: str
+            Either a path to a VIC global parameter file or a multiline string
+            including VIC global parameter options.
+        logdir : str, optional
+            Path to write log files to. 
+        **kwargs : key=value, optional
+            Keyword arguments to pass to the VIC executable. Valid options are: 
+                mpi_proc : int
+                    Specifies number of processors for MPI (must be integer). Default is 1 processor. 
 
-        mpi_proc -- specifies number of processors for MPI (must be integer). Default is 1 processor. 
+        Returns
+        --------
+        returncode : int
+            Return error code from VIC. 
 
-        example: mpi_proc=4 
+        Examples
+        --------
+        retcode = vic.run(global_param_path, logdir=".", mpi_proc=4) 
 
         """
 
