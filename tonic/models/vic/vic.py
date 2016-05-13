@@ -38,8 +38,16 @@ class VIC(object):
         self._call_vic('-o')
         return self.stdout
 
-    def run(self, global_param, logdir=None):
-        """run VIC"""
+    def run(self, global_param, logdir=None, **kwargs):
+        """run VIC.
+
+        Keyword argument: 
+
+        mpi_proc -- specifies number of processors for MPI (must be integer). Default is 1 processor. 
+
+        example: mpi_proc=4 
+
+        """
 
         if os.path.isfile(global_param):
             global_param_file = global_param
@@ -51,7 +59,7 @@ class VIC(object):
             with open(global_param_file, mode='w') as f:
                 f.write(global_param)
 
-        self._call_vic('-g', global_param_file)
+        self._call_vic('-g', global_param_file, **kwargs)
 
         if logdir:
             now = datetime.now()
@@ -70,7 +78,7 @@ class VIC(object):
     def _call_vic(self, *args, **kwargs):
 
         vic_args = []
-        
+
         if "mpi_proc" in kwargs.keys():
             if not isinstance(kwargs["mpi_proc"], int):
                 raise TypeError("number of processors must be specified as an integer")   
